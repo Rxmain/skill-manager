@@ -22,10 +22,6 @@ class Competences
      */
     private $name;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="competences")
-     */
-    private $user;
 
     public function getId(): ?int
     {
@@ -44,15 +40,5 @@ class Competences
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
 
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
 }

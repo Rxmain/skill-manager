@@ -24,8 +24,11 @@ class EntrepriseController extends AbstractController
      */
     public function index(): Response
     {
+        $entreprise = $this->entityManager->getRepository(Entreprise::class)->findAll();
+
         return $this->render('entreprise/index.html.twig', [
             'controller_name' => 'EntrepriseController',
+            'entreprise' => $entreprise
         ]);
     }
 
