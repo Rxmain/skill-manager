@@ -1,0 +1,25 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block page_title 'Welcome to EasyAdmin 3' %}
+
+{% block page_content %}
+   <div class="container">
+       <div class="row">
+           <div class="col-6 alert-info">
+            <span class="display-3"> 300 Nouveaux collaborateurs</span>
+           </div>
+           <div class="col-6 alert-success">
+            <span class="display-3">120 Collaborateurs modifiés</span>
+           </div>
+           <div class="col-6 alert-success">
+               <span class="display-3">2 Nouveaux candidats</span>
+               {% for candidate in nameCandidate%}
+                    {{candidate.firstname }}
+               {% endfor %}
+           </div>
+       </div>
+   </div>
+
+
+{% endblock %}

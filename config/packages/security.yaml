@@ -49,4 +49,5 @@ security:
     role_hierarchy:
         ROLER_USER: ROLE_USER
         ROLE_ADMIN: ROLE_ADMIN
+        ROLE_CANDITATE: ROLER_USER
         ROLE_SUPER_ADMIN: [ ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH ]
