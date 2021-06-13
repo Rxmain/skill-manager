@@ -16,7 +16,9 @@
             </ul>
         </article>
     {% endfor %}
-    <a href="/entreprise/new">Ajouter une entreprise</a>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="/entreprise/new">Ajouter une entreprise</a>
+    {% endif %}
 
 </div>
 {% endblock %}

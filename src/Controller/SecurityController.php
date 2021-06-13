@@ -8,16 +8,20 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class  SecurityController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
+    private UserPasswordHasherInterface $passwordEncoder;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordEncoder)
     {
         $this->entityManager = $entityManager;
+        $this->passwordEncoder = $passwordEncoder;
     }
 
     /**
@@ -58,8 +62,12 @@ class  SecurityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
 
+            $user->setPassword($this->passwordEncoder->hashPassword($user, $user->getPassword()));
+
             $this->entityManager->persist($user);
             $this->entityManager->flush();
+
+            return $this->redirectToRoute('/entreprise');
         }
 
 
