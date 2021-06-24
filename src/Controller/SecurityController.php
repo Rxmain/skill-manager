@@ -67,7 +67,7 @@ class  SecurityController extends AbstractController
             $this->entityManager->persist($user);
             $this->entityManager->flush();
 
-            return $this->redirectToRoute('/entreprise');
+            return $this->redirectToRoute('/admin');
         }
 
 

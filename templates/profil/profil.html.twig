@@ -1,0 +1,58 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block title %}Mon profil{% endblock %}
+
+{% block page_content %}
+<div class="container-page-details">
+    <div class="profil-main-info">
+        <div class="status">
+            {% if user.collab == 1 %}
+                <p>Collaborateur</p>
+            {% endif %}
+            {% if user.collab == null %}
+                <p>Candidat</p>
+            {% endif %}
+        </div>
+        <h2 class="title">Profil</h2>
+        <div class="name">
+            <p>{{ user.lastname }}</p>
+            <p>{{ user.firstname }}</p>
+        </div>
+        <div class="profession">
+            <p>{{ user.profession }}</p>
+        </div>
+        <div class="adresse">
+            <h3>Adresse</h3>
+            <p>{{ user.adresse }}</p>
+        </div>
+        <div class="cp">
+            <h3>Code postal</h3>
+            <p>{{ user.postalcode }}</p>
+        </div>
+        <div class="city">
+            <h3>Ville</h3>
+            <p>{{ user.city }}</p>
+        </div>
+        <div class="email">
+            <h3>Email</h3>
+            <p>{{ user.email }}</p>
+        </div>
+        <div class="competences">
+            <h3>Compétences principales</h3>
+            {% for competence in user.competences %}
+                <p class="single-competence">{{ competence.name }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="competences-part">
+        <div class="form-skills">
+            {{ form(form_skills) }}
+        </div>
+        <div class="competences-all">
+            {% for competence in user.competences %}
+                <p class="single-competence">{{ competence.name }}</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

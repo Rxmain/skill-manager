@@ -9,6 +9,7 @@ use App\Entity\Experience;
 use App\Entity\User;
 use App\Repository\CandidateRepository;
 use App\Repository\UserRepository;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -39,7 +40,7 @@ class DashboardController extends AbstractDashboardController
     public function index(): Response
     {
         return $this->render('bundles/EasyAdminBundle/welcome.html.twig', [
-            'nameCandidate' => $this->candidateRepository->findAll(),
+            'countAllCandidates' => $this->candidateRepository->findAll(),
 //            'countAllHelp' => ,
 
         ]);
@@ -49,15 +50,30 @@ class DashboardController extends AbstractDashboardController
     {
         return Dashboard::new()
             ->setTitle('Gestionnaire de compétences');
+
     }
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linktoDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('Collaborateurs', 'fas fa-user', User::class);
+        yield MenuItem::section('Administration');
+        yield MenuItem::linktoDashboard('Accueil', 'fa fa-home');
+        yield MenuItem::linkToRoute('Mon profil', 'fa fa-user', 'admin-profil');
+
+        yield MenuItem::section('Gestion des collaborateur / Candidats');
+        yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-users', User::class);
         yield MenuItem::linkToCrud('Candidats', 'fas fa-address-card', Candidate::class);
+
+        yield MenuItem::section('Expériences, compétences,...');
         yield MenuItem::linkToCrud('Entreprises', 'fas fa-archive', Entreprise::class);
         yield MenuItem::linkToCrud('Competences', 'fas fa-star', Competences::class);
         yield MenuItem::linkToCrud('Experiences', 'fas fa-cogs', Experience::class);
+
+        yield MenuItem::section('Session');
+        yield MenuItem::linkToLogout('Déconnexion', 'fa fa-remove');
+    }
+
+    public function configureAssets(): Assets
+    {
+        return Assets::new()->addWebpackEncoreEntry('app');
     }
 }

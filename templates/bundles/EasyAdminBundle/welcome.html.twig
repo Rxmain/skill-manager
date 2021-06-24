@@ -1,22 +1,55 @@
 {# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
-{% extends '@EasyAdmin/page/content.html.twig' %}
+{% extends ['@EasyAdmin/page/content.html.twig', './././base.html.twig'] %}
 
-{% block page_title 'Welcome to EasyAdmin 3' %}
+{#<link rel="stylesheet" href="./assets/styles/app.scss">#}
+
+{% block page_title 'Tableau de bord' %}
 
 {% block page_content %}
    <div class="container">
-       <div class="row">
-           <div class="col-6 alert-info">
-            <span class="display-3"> 300 Nouveaux collaborateurs</span>
+       <div class="admin-first-row">
+           <div class="cardbox new-collaborator">
+            <span> 300 Nouveaux collaborateurs</span>
            </div>
-           <div class="col-6 alert-success">
-            <span class="display-3">120 Collaborateurs modifiés</span>
+           <div class="cardbox modified-collaborator">
+            <span >120 Collaborateurs modifiés</span>
            </div>
-           <div class="col-6 alert-success">
-               <span class="display-3">2 Nouveaux candidats</span>
-               {% for candidate in nameCandidate%}
-                    {{candidate.firstname }}
+           <div class="cardbox new-candidates">
+               <span>2 Nouveaux candidats</span>
+               <a href="/candidate/new">Ajouter un candidat</a>
+
+           </div>
+       </div>
+
+       <div class="admin-second-row">
+           <div class="latest-collab">
+               <h2>Derniers candidats</h2>
+               {% for candidate in countAllCandidates%}
+                   <div class="new-candidates">
+                       {{candidate.firstname }}
+                       {{candidate.lastname }}
+                   </div>
                {% endfor %}
+           </div>
+           <div class="latest-collab-modified">
+               <h2>Derniers candidats</h2>
+               {% for candidate in countAllCandidates%}
+                   <div class="new-candidates">
+                       {{candidate.firstname }}
+                       {{candidate.lastname }}
+                   </div>
+               {% endfor %}
+           </div>
+           <div class="latest-candidates">
+               <h2>Derniers candidats</h2>
+               <div class="latest-candidates-container">
+                   {% for candidate in countAllCandidates%}
+                       <div class="new-candidates">
+                           {{candidate.firstname }}
+                           {{candidate.lastname }}
+                       </div>
+                   {% endfor %}
+               </div>
            </div>
        </div>
    </div>

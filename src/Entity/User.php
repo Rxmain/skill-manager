@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -31,7 +33,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     private $password;
 
@@ -44,6 +46,59 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $lastname;
+
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $age;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $profession;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $phone;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $adresse;
+
+    /**
+     * @ORM\Column(type="string", length=10)
+     */
+    private $postalcode;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $city;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Competences", inversedBy="candidates")
+     */
+    private $competences;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Experience", inversedBy="candidates")
+     */
+    private $experiences;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $Collab;
+
+    public function __construct()
+    {
+        $this->competences = new ArrayCollection();
+        $this->experiences = new ArrayCollection();
+    }
+
+
 
     public function getId(): ?int
     {
@@ -151,6 +206,142 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastname(string $lastname): self
     {
         $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getCompetences(): Collection
+    {
+        return $this->competences;
+    }
+
+    public function setCompetences(?Competences $competences): self
+    {
+        $this->competences = $competences;
+
+        return $this;
+    }
+
+    public function getAge(): ?int
+    {
+        return $this->age;
+    }
+
+    public function setAge(int $age): self
+    {
+        $this->age = $age;
+
+        return $this;
+    }
+
+    public function getProfession(): ?string
+    {
+        return $this->profession;
+    }
+
+    public function setProfession(string $profession): self
+    {
+        $this->profession = $profession;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): self
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): self
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getPostalcode(): ?string
+    {
+        return $this->postalcode;
+    }
+
+    public function setPostalcode(string $postalcode): self
+    {
+        $this->postalcode = $postalcode;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): self
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function addCompetence(Competences $competence): self
+    {
+        if (!$this->competences->contains($competence)) {
+            $this->competences[] = $competence;
+        }
+
+        return $this;
+    }
+
+    public function removeCompetence(Competences $competence): self
+    {
+        $this->competences->removeElement($competence);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Experience[]
+     */
+    public function getExperiences(): Collection
+    {
+        return $this->experiences;
+    }
+
+    public function addExperience(Experience $experience): self
+    {
+        if (!$this->experiences->contains($experience)) {
+            $this->experiences[] = $experience;
+        }
+
+        return $this;
+    }
+
+    public function removeExperience(Experience $experience): self
+    {
+        $this->experiences->removeElement($experience);
+
+        return $this;
+    }
+
+    public function getCollab(): ?bool
+    {
+        return $this->Collab;
+    }
+
+    public function setCollab(?bool $Collab): self
+    {
+        $this->Collab = $Collab;
 
         return $this;
     }

@@ -19,6 +19,8 @@ class CandidateRepository extends ServiceEntityRepository
         parent::__construct($registry, Candidate::class);
     }
 
+
+
      /**
         * @return int|mixed|string
         */
@@ -27,7 +29,7 @@ class CandidateRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('c')
 
             ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+            ->setMaxResults(1)
             ->getQuery()
             ->getResult()
         ;

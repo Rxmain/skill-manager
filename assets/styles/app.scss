@@ -1,0 +1,94 @@
+//@import './pages/dashboard.scss';
+body, .main-sidebar, .content-header, .content-header::after, .content-header::before{
+  background-color: white;
+}
+.content-panel {
+  min-height: 370px;
+}
+.admin-first-row {
+  display: flex;
+  justify-content: space-between;
+  .cardbox {
+    background-color: #FFF;
+    border-radius: 10px;
+    min-height: 110px;
+    box-shadow: 2px 2Px 14px 0px rgba(0, 0, 0, 0.2);
+    margin-bottom: 50px;
+
+    span {
+      font-size: 15px;
+      padding: 10px 15px;
+      min-width: 340px;
+      display: flex;
+      font-weight: bold;
+    }
+  }
+}
+.admin-second-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  .latest-candidates-container {
+    display: flex;
+    .new-candidates {
+      margin: 20px;
+    }
+  }
+}
+.profil-main-info {
+  .title {
+    text-align: center;
+  }
+  background-color: lightgray;
+  max-width: 400px;
+  min-height: 600px;
+  width: 100%;
+  padding: 0 20px;
+
+  .name {
+    display: flex;
+    justify-content: space-around;
+    max-width: 160px;
+    margin: 0 auto;
+  }
+  .profession {
+    text-align: center;
+  }
+}
+.status {
+  background-color: red;
+  color: white;
+  text-align: center;
+  text-transform: uppercase;
+}
+.single-competence {
+  border: 1px solid white;
+  border-radius: 15px;
+  margin-right: 10px;
+  text-align: center;
+  width: max-content;
+  padding: 10px 30px;
+}
+.competences {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.competences-part {
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 5px;
+  width: 700px;
+}
+.container-page-details {
+  display: flex;
+  justify-content: space-between;
+}
+.form-skills {
+ form{
+   width: 100%;
+   div {
+     display: flex;
+   }
+ }
+}

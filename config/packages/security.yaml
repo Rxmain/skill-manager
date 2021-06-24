@@ -2,6 +2,8 @@ security:
     password_hashers:
         App\Entity\User:
             algorithm: auto
+        App\Entity\Candidate:
+            algorithm: auto
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
@@ -10,6 +12,7 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+
         doctrine_user_provider:
             entity:
                 class: App\Entity\User
@@ -43,11 +46,11 @@ security:
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/profile, roles: ROLE_USER }
-        - { path: ^/editor, roles: ROLE_EDITOR }
+        - { path: ^/collaborator, roles: ROLE_COLLABORATOR }
 #
 #
     role_hierarchy:
         ROLER_USER: ROLE_USER
         ROLE_ADMIN: ROLE_ADMIN
-        ROLE_CANDITATE: ROLER_USER
-        ROLE_SUPER_ADMIN: [ ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH ]
+        ROLE_COLLABORATOR: ROLER_COLLABORATOR
+#        ROLE_SUPER_ADMIN: [ ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH ]

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ExperienceRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -71,6 +73,17 @@ class Experience
      * @ORM\ManyToOne(targetEntity=Entreprise::class, inversedBy="experiences")
      */
     private $entreprise;
+
+
+    /**
+     * @ORM\ManyToMany (targetEntity="User", mappedBy="experiences")
+     */
+    private $candidates;
+
+    public function __construct()
+    {
+        $this->candidates = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -208,4 +221,37 @@ class Experience
 
         return $this;
     }
+
+    /**
+     * @return Collection|Candidate[]
+     */
+    public function getCandidates(): Collection
+    {
+        return $this->candidates;
+    }
+
+    public function addCandidate(Candidate $candidate): self
+    {
+        if (!$this->candidates->contains($candidate)) {
+            $this->candidates[] = $candidate;
+            $candidate->addExperience($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCandidate(Candidate $candidate): self
+    {
+        if ($this->candidates->removeElement($candidate)) {
+            $candidate->removeExperience($this);
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
+
 }
