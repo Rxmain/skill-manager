@@ -20,16 +20,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 
 class DashboardController extends AbstractDashboardController
 {
-    protected $candidateRepository;
     protected $userRepository;
 
     public function __construct(
-        CandidateRepository $candidateRepository,
         UserRepository $userRepository
     )
     {
         $this->userRepository = $userRepository;
-        $this->candidateRepository = $candidateRepository;
 
     }
 
@@ -40,8 +37,9 @@ class DashboardController extends AbstractDashboardController
     public function index(): Response
     {
         return $this->render('bundles/EasyAdminBundle/welcome.html.twig', [
-            'countAllCandidates' => $this->candidateRepository->findAll(),
-//            'countAllHelp' => ,
+            'countAllCandidates' => $this->userRepository->findBy(array( 'Collab' => NULL), array('Collab' =>'DESC')),
+            'countLatestCollab' => $this->userRepository->findBy(array( 'Collab' => 1), array('Collab' =>'DESC')),
+            'countNumberCollab' => $this->userRepository->count(['Collab' => 1])
 
         ]);
     }

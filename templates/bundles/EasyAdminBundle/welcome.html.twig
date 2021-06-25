@@ -9,10 +9,12 @@
    <div class="container">
        <div class="admin-first-row">
            <div class="cardbox new-collaborator">
-            <span> 300 Nouveaux collaborateurs</span>
+            <span> {{ countNumberCollab }}</span>
+               <p>Nouveaux collaborateurs</p>
            </div>
            <div class="cardbox modified-collaborator">
-            <span >120 Collaborateurs modifiés</span>
+               <span >120</span>
+               <p>Collaborateurs modifiés</p>
            </div>
            <div class="cardbox new-candidates">
                <span>2 Nouveaux candidats</span>
@@ -23,22 +25,15 @@
 
        <div class="admin-second-row">
            <div class="latest-collab">
-               <h2>Derniers candidats</h2>
-               {% for candidate in countAllCandidates%}
-                   <div class="new-candidates">
-                       {{candidate.firstname }}
-                       {{candidate.lastname }}
-                   </div>
-               {% endfor %}
-           </div>
-           <div class="latest-collab-modified">
-               <h2>Derniers candidats</h2>
-               {% for candidate in countAllCandidates%}
-                   <div class="new-candidates">
-                       {{candidate.firstname }}
-                       {{candidate.lastname }}
-                   </div>
-               {% endfor %}
+               <h2>Derniers collaborateurs</h2>
+               <div class="latest-collab-container">
+                    {% for candidate in countLatestCollab%}
+                       <div class="new-candidates">
+                           {{candidate.firstname }}
+                           {{candidate.lastname }}
+                       </div>
+                   {% endfor %}
+               </div>
            </div>
            <div class="latest-candidates">
                <h2>Derniers candidats</h2>

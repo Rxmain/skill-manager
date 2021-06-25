@@ -3,8 +3,10 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Competences;
+use App\Entity\Experience;
 use App\Entity\User;
 use App\Form\CompetencesType;
+use App\Form\ExperienceType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -86,26 +88,39 @@ class UserCrudController extends AbstractCrudController
 
 
         $skills = new Competences();
+
         $form = $this->createForm(CompetencesType::class, $skills);
 
         $form->handleRequest($request);
 
-        $builder->add('users', CompetencesType::class, [
-            'class' => Competences::class,
-            'choices' => $group->getUsers(),
-        ]);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $skills = $form->getData();
+            $id = $form->getData();
+
 
             $this->entityManager->persist($skills);
-            $this->entityManager->flush();
+            $this->entityManager->persist($user);
+
+            $this->entityManager->flush($skills);
+        }
+
+        $experience = new Experience();
+        $formExperience = $this->createForm(ExperienceType::class, $experience);
+
+        $formExperience->handleRequest($request);
+
+        if ($formExperience->isSubmitted() && $formExperience->isValid()) {
+            $experience = $formExperience->getData();
+
+            $this->entityManager->persist($user);
+
+            $this->entityManager->flush($user);
         }
 
 
         return $this->render('profil/profil.html.twig', [
             'user' => $user,
-            'form_skills' => $form->createView()
+            'form_skills' => $form->createView(),
+            'form_experience' => $formExperience->createView()
         ]);
     }
 

@@ -46,11 +46,30 @@
     </div>
     <div class="competences-part">
         <div class="form-skills">
+            <h2>Compétences</h2>
             {{ form(form_skills) }}
         </div>
         <div class="competences-all">
             {% for competence in user.competences %}
                 <p class="single-competence">{{ competence.name }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="experience-part">
+        <div class="form-experience">
+            <h2>Expériences</h2>
+            {{ form(form_experience) }}
+        </div>
+        <div class="competences-all">
+            {% for experience in user.experiences %}
+                <div class="competence-single">
+                    <h3>Experience</h3>
+                    <span>{{ experience.startdate|date("m/d/Y")}} - {{ experience.enddate|date("m/d/Y")}}</span>
+                    <p class="single-competence">{{ experience.function }}</p>
+                    <p>{{ experience.place}}</p>
+                    <p>{{ experience.description }}</p>
+                </div>
+
             {% endfor %}
         </div>
     </div>

@@ -92,3 +92,11 @@ body, .main-sidebar, .content-header, .content-header::after, .content-header::b
    }
  }
 }
+.competence-single {
+  background-color:red;
+}
+.latest-collab-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
