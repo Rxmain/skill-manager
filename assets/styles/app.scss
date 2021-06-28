@@ -67,7 +67,7 @@ body, .main-sidebar, .content-header, .content-header::after, .content-header::b
   margin-right: 10px;
   text-align: center;
   width: max-content;
-  padding: 10px 30px;
+  margin-bottom: 0;
 }
 .competences {
   display: flex;
@@ -78,7 +78,7 @@ body, .main-sidebar, .content-header, .content-header::after, .content-header::b
   background-color: white;
   border: 1px solid black;
   border-radius: 5px;
-  width: 700px;
+  width: 330px;
 }
 .container-page-details {
   display: flex;
@@ -93,10 +93,31 @@ body, .main-sidebar, .content-header, .content-header::after, .content-header::b
  }
 }
 .competence-single {
-  background-color:red;
+  border: 1px solid black;
 }
 .latest-collab-container {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+}
+.experience-part {
+  width: 390px;
+}
+.form-skills form div {
+  flex-direction: column;
+}
+.single-competence-container {
+  display:flex;
+  align-items: center;
+  border: 1px solid black;
+  margin-top: 5px;
+  p {
+    margin-bottom: 0;
+  }
+}
+.competences-all {
+  margin-top: 15px;
+}
+.edit-competence {
+  margin-left: auto;
 }

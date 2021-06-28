@@ -12,6 +12,9 @@
             {% if user.collab == null %}
                 <p>Candidat</p>
             {% endif %}
+            {% for competence in user.competences %}
+
+            {% endfor %}
         </div>
         <h2 class="title">Profil</h2>
         <div class="name">
@@ -47,18 +50,32 @@
     <div class="competences-part">
         <div class="form-skills">
             <h2>Compétences</h2>
-            {{ form(form_skills) }}
+            {{ form(form_competences) }}
         </div>
         <div class="competences-all">
             {% for competence in user.competences %}
-                <p class="single-competence">{{ competence.name }}</p>
+                <div class="single-competence-container">
+                    <p class="single-competence">{{ competence.name }}</p>
+                    {% if competence.competencelike == 1 %}
+                        <i class="fa fa-heart"></i>
+                    {% endif %}
+                    {% if competence.competencelike == null %}
+                    {% endif %}
+                   {% if competence.levelcompetence == null %}
+                       {% else %}
+                           <p> niveau: {{ competence.levelcompetence }} </p>
+                   {% endif %}
+                    <a class="edit-competence" href="{{ path('admin_competences_edit', { 'user': user.id, 'id': competence.id})}}">Editer</a>
+
+                </div>
+
             {% endfor %}
         </div>
     </div>
     <div class="experience-part">
         <div class="form-experience">
             <h2>Expériences</h2>
-            {{ form(form_experience) }}
+            {{ form(form_experiences) }}
         </div>
         <div class="competences-all">
             {% for experience in user.experiences %}
@@ -68,10 +85,15 @@
                     <p class="single-competence">{{ experience.function }}</p>
                     <p>{{ experience.place}}</p>
                     <p>{{ experience.description }}</p>
+                    <a class="edit-competence" href="{{ path('admin_experience_edit', { 'user': user.id, 'id': experience.id})}}">Editer</a>
+
                 </div>
 
             {% endfor %}
         </div>
     </div>
 </div>
+    <div class="edit">
+
+    </div>
 {% endblock %}

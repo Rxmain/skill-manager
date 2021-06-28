@@ -3,36 +3,89 @@
 {% block title %}Mon profil{% endblock %}
 
 {% block page_content %}
-    <div class="profil-main-info">
-        <h2 class="title">Profil</h2>
-        <div class="name">
-            <p>{{ app.user.lastname }}</p>
-            <p>{{ app.user.firstname }}</p>
+    <div class="container-page-details">
+        <div class="profil-main-info">
+            <div class="status">
+                {% if app.user.collab == 1 %}
+                    <p>Collaborateur</p>
+                {% endif %}
+                {% if app.user.collab == null %}
+                    <p>Candidat</p>
+                {% endif %}
+            </div>
+            <h2 class="title">Profil</h2>
+            <div class="name">
+                <p>{{ app.user.lastname }}</p>
+                <p>{{ app.user.firstname }}</p>
+            </div>
+            <div class="profession">
+                <p>{{ app.user.profession }}</p>
+            </div>
+            <div class="adresse">
+                <h3>Adresse</h3>
+                <p>{{ app.user.adresse }}</p>
+            </div>
+            <div class="cp">
+                <h3>Code postal</h3>
+                <p>{{ app.user.postalcode }}</p>
+            </div>
+            <div class="city">
+                <h3>Ville</h3>
+                <p>{{ app.user.city }}</p>
+            </div>
+            <div class="email">
+                <h3>Email</h3>
+                <p>{{ app.user.email }}</p>
+            </div>
+            <div class="competences">
+                <h3>Compétences principales</h3>
+                {% for competence in app.user.competences %}
+                    <p class="single-competence">{{ competence.name }}</p>
+                {% endfor %}
+            </div>
         </div>
-        <div class="profession">
-            <p>{{ app.user.profession }}</p>
+        <div class="competences-part">
+            <div class="form-skills">
+                <h2>Mes Compétences</h2>
+            </div>
+            <div class="competences-all">
+                {% for competence in app.user.competences %}
+                    <div class="single-competence-container">
+                        <p class="single-competence">{{ competence.name }}</p>
+                        {% if competence.competencelike == 1 %}
+                            <i class="fa fa-heart"></i>
+                        {% endif %}
+                        {% if competence.competencelike == null %}
+                        {% endif %}
+                        {% if competence.levelcompetence == null %}
+                        {% else %}
+                            <p> niveau: {{ competence.levelcompetence }} </p>
+                        {% endif %}
+                        <a class="edit-competence" href="{{ path('admin_competences_edit', { 'user': app.user.id, 'id': competence.id})}}">Editer</a>
+
+                    </div>
+
+                {% endfor %}
+            </div>
         </div>
-        <div class="adresse">
-            <h3>Adresse</h3>
-            <p>{{ app.user.adresse }}</p>
-        </div>
-        <div class="cp">
-            <h3>Code postal</h3>
-            <p>{{ app.user.postalcode }}</p>
-        </div>
-        <div class="city">
-            <h3>Ville</h3>
-            <p>{{ app.user.city }}</p>
-        </div>
-        <div class="email">
-            <h3>Email</h3>
-            <p>{{ app.user.email }}</p>
-        </div>
-        <div class="competences">
-            <h3>Compétences</h3>
-            {% for competence in app.user.competences %}
-                {{ competence.name }}
-            {% endfor %}
+        <div class="experience-part">
+            <div class="form-experience">
+                <h2>Mes Expériences</h2>
+            </div>
+            <div class="competences-all">
+                {% for experience in app.user.experiences %}
+                    <div class="competence-single">
+                        <h3>Experience</h3>
+                        <span>{{ experience.startdate|date("m/d/Y")}} - {{ experience.enddate|date("m/d/Y")}}</span>
+                        <p class="single-competence">{{ experience.function }}</p>
+                        <p>{{ experience.place}}</p>
+                        <p>{{ experience.description }}</p>
+                        <a class="edit-competence" href="{{ path('admin_experience_edit', { 'user': app.user.id, 'id': experience.id})}}">Editer</a>
+
+                    </div>
+
+                {% endfor %}
+            </div>
         </div>
     </div>
 

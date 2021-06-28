@@ -4,26 +4,36 @@ namespace App\Controller\Admin;
 
 use App\Entity\Competences;
 use App\Entity\Experience;
+use App\Entity\TypeExperience;
 use App\Entity\User;
 use App\Form\CompetencesType;
 use App\Form\ExperienceType;
+use App\Repository\CompetencesRepository;
+use App\Repository\ExperienceRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectManager;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class UserCrudController extends AbstractCrudController
 {
@@ -53,15 +63,13 @@ class UserCrudController extends AbstractCrudController
             TextField::new('postalcode'),
             TextField::new('city'),
 
-            BooleanField::new('collab'),
-
+            BooleanField::new('collab')->setPermission('ROLE_ADMIN'),
 
             TextField::new('password'),
-            ArrayField::new('roles'),
 
+            ArrayField::new('roles')->setPermission('ROLE_ADMIN'),
 
-            AssociationField::new('competences'),
-            AssociationField::new('experiences'),
+            AssociationField::new('competences')->autocomplete(),
         ];
     }
     public function configureActions(Actions $actions): Actions
@@ -76,52 +84,49 @@ class UserCrudController extends AbstractCrudController
 
         return $actions
             ->add(Crud::PAGE_INDEX, $detailsuser);
+
     }
 
     /**
      * @Route(path="user-detail-single", name="user-detail")
      *
      */
-    public function detailedInfo (Request $request, UserRepository $userRepository){
+    public function detailedInfo (Request $request, UserRepository $userRepository, EntityManagerInterface $em){
         $id = $request->get('id');
         $user = $userRepository->find($id);
 
-
         $skills = new Competences();
-
         $form = $this->createForm(CompetencesType::class, $skills);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $id = $form->getData();
+            $skills = $form->getData();
 
-
-            $this->entityManager->persist($skills);
-            $this->entityManager->persist($user);
-
-            $this->entityManager->flush($skills);
+            $this->entityManager->persist($skills->setUser($user));
+            $this->entityManager->flush();
         }
 
-        $experience = new Experience();
-        $formExperience = $this->createForm(ExperienceType::class, $experience);
+        $experiences = new Experience();
+        $formExperience = $this->createForm(ExperienceType::class, $experiences);
 
         $formExperience->handleRequest($request);
-
         if ($formExperience->isSubmitted() && $formExperience->isValid()) {
-            $experience = $formExperience->getData();
+            $experiences = $formExperience->getData();
 
+            $this->entityManager->persist($experiences->setUser($user));
             $this->entityManager->persist($user);
 
-            $this->entityManager->flush($user);
+            $this->entityManager->flush();
         }
 
 
         return $this->render('profil/profil.html.twig', [
             'user' => $user,
-            'form_skills' => $form->createView(),
-            'form_experience' => $formExperience->createView()
+            'form_competences'=> $form->createView(),
+            'form_experiences' => $formExperience->createView(),
         ]);
+
     }
 
 

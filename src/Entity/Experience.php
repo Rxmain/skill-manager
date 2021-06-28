@@ -15,7 +15,7 @@ class Experience
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", name="id_user_experiences")
      */
     private $id;
 
@@ -74,16 +74,17 @@ class Experience
      */
     private $entreprise;
 
-
     /**
-     * @ORM\ManyToMany (targetEntity="User", mappedBy="experiences")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="experiences")
      */
-    private $candidates;
+    private $user;
+
 
     public function __construct()
     {
-        $this->candidates = new ArrayCollection();
+        $this->experiences = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -222,36 +223,22 @@ class Experience
         return $this;
     }
 
-    /**
-     * @return Collection|Candidate[]
-     */
-    public function getCandidates(): Collection
-    {
-        return $this->candidates;
-    }
-
-    public function addCandidate(Candidate $candidate): self
-    {
-        if (!$this->candidates->contains($candidate)) {
-            $this->candidates[] = $candidate;
-            $candidate->addExperience($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCandidate(Candidate $candidate): self
-    {
-        if ($this->candidates->removeElement($candidate)) {
-            $candidate->removeExperience($this);
-        }
-
-        return $this;
-    }
 
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
     }
 
 }

@@ -4,6 +4,8 @@ namespace App\Controller\Admin;
 
 use App\Entity\Experience;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
@@ -29,8 +31,6 @@ class ExperienceCrudController extends AbstractCrudController
             TextField::new('technical_environment'),
             DateField::new('start_date'),
             DateField::new('end_date'),
-
-
 
             TextEditorField::new('description'),
         ];

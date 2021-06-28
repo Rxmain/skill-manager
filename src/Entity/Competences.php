@@ -3,12 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\CompetencesRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Boolean;
 
 /**
  * @ORM\Entity(repositoryClass=CompetencesRepository::class)
+ *
  */
 class Competences
 {
@@ -25,15 +25,19 @@ class Competences
     private $name;
 
     /**
-     * @ORM\ManyToMany (targetEntity="User", mappedBy="competences")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="competences")
      */
-    private $candidates;
+    private $user;
 
-    public function __construct()
-    {
-        $this->users = new ArrayCollection();
-        $this->candidates = new ArrayCollection();
-    }
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $competencelike;
+
+    /**
+     * @ORM\Column(type="smallint", nullable=true)
+     */
+    private $levelcompetence;
 
 
     public function getId(): ?int
@@ -53,69 +57,45 @@ class Competences
         return $this;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->setCompetences($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getCompetences() === $this) {
-                $user->setCompetences(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Candidate[]
-     */
-    public function getCandidates(): Collection
-    {
-        return $this->candidates;
-    }
-
-    public function addCandidate(Candidate $candidate): self
-    {
-        if (!$this->candidates->contains($candidate)) {
-            $this->candidates[] = $candidate;
-            $candidate->setCompetences($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCandidate(Candidate $candidate): self
-    {
-        if ($this->candidates->removeElement($candidate)) {
-            // set the owning side to null (unless already changed)
-            if ($candidate->getCompetences() === $this) {
-                $candidate->setCompetences(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function __toString()
     {
        return $this->name;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCompetencelike(): ?bool
+    {
+        return $this->competencelike;
+    }
+
+    public function setCompetencelike(?bool $competencelike): self
+    {
+        $this->competencelike = $competencelike;
+
+        return $this;
+    }
+
+    public function getLevelcompetence(): ?int
+    {
+        return $this->levelcompetence;
+    }
+
+    public function setLevelcompetence(?int $levelcompetence): self
+    {
+        $this->levelcompetence = $levelcompetence;
+
+        return $this;
     }
 
 

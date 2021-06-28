@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Experience;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,10 +25,13 @@ class ExperienceType extends AbstractType
             ->add('name')
             ->add('type_experience')
             ->add('entreprise')
-            ->add('candidates')
-            ->add('submit', SubmitType::class);
+//            ->add('user', EntityType::class,  array(
+//                'class'         => 'App\Entity\User',
+//                'expanded' => false,
+//            ))
+            ->add('submit', SubmitType::class)
 
-        ;
+    ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

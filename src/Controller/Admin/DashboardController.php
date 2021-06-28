@@ -13,10 +13,12 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+
 
 class DashboardController extends AbstractDashboardController
 {
@@ -32,7 +34,7 @@ class DashboardController extends AbstractDashboardController
 
     /**
      * @Route("/admin", name="admin")
-     * @Security("is_granted('ROLE_ADMIN')")
+     *
      */
     public function index(): Response
     {
@@ -58,8 +60,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToRoute('Mon profil', 'fa fa-user', 'admin-profil');
 
         yield MenuItem::section('Gestion des collaborateur / Candidats');
-        yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-users', User::class);
-        yield MenuItem::linkToCrud('Candidats', 'fas fa-address-card', Candidate::class);
+        yield MenuItem::linkToCrud('Édition de profil', 'fas fa-users', User::class);
 
         yield MenuItem::section('Expériences, compétences,...');
         yield MenuItem::linkToCrud('Entreprises', 'fas fa-archive', Entreprise::class);

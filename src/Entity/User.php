@@ -6,11 +6,15 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+//use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @Vich\Uploadable()
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -78,27 +82,79 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $city;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Competences", inversedBy="candidates")
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $Collab;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity=Experience::class, mappedBy="user")
+     */
+    private $experiences;
+//
+//    /**
+//     * @ORM\Column (type="string", length=100, nullable=true)
+//     */
+//    private $thumbnail;
+//
+//    /**
+//     * @Vich\UploadableField(mapping="thumbnails", fileNameProperty="thumbnail")
+//     *
+//     */
+//    private $thumbnailFile;
+
+//    /**
+//     * @ORM\Column (type="datetime", nullable=true)
+//     */
+//    private $updatedAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Competences::class, mappedBy="user")
      */
     private $competences;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Experience", inversedBy="candidates")
+//     * @return mixed
      */
-    private $experiences;
+//    public function getThumbnailFile(): ?array
+//    {
+//        return $this->thumbnailFile;
+//    }
+//
+//    /**
+//     * @param mixed $thumbnailFile
+//     */
+//    public function setThumbnailFile($thumbnailFile = null)
+//    {
+//        $this->thumbnailFile = $thumbnailFile;
+//        if( null !== $thumbnailFile) {
+//            $this->updatedAt = new \DateTime();
+//        }
+//    }
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $Collab;
+//    /**
+//     * @return mixed
+//     */
+//    public function getThumbnail()
+//    {
+//        return $this->thumbnail;
+//    }
+//
+//    /**
+//     * @param mixed $thumbnail
+//     */
+//    public function setThumbnail($thumbnail): void
+//    {
+//        $this->thumbnail = $thumbnail;
+//    }
 
     public function __construct()
     {
         $this->competences = new ArrayCollection();
         $this->experiences = new ArrayCollection();
+//        $this->updatedAt = new DateTime();
+
     }
-
-
 
     public function getId(): ?int
     {
@@ -210,17 +266,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getCompetences(): Collection
-    {
-        return $this->competences;
-    }
-
-    public function setCompetences(?Competences $competences): self
-    {
-        $this->competences = $competences;
-
-        return $this;
-    }
+//    public function getCompetences(): Collection
+//    {
+//        return $this->competences;
+//    }
+//
+//    public function setCompetences(?Competences $competences): self
+//    {
+//        $this->competences = $competences;
+//
+//        return $this;
+//    }
 
     public function getAge(): ?int
     {
@@ -294,6 +350,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getCollab(): ?bool
+    {
+        return $this->Collab;
+    }
+
+    public function setCollab(?bool $Collab): self
+    {
+        $this->Collab = $Collab;
+
+        return $this;
+    }
+    public function __toString()
+    {
+        return $this->firstname;
+    }
+
+    /**
+     * @return Collection|Competences[]
+     */
+    public function getCompetences(): Collection
+    {
+        return $this->competences;
+    }
+
     public function addCompetence(Competences $competence): self
     {
         if (!$this->competences->contains($competence)) {
@@ -322,6 +402,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->experiences->contains($experience)) {
             $this->experiences[] = $experience;
+            $experience->setUser($this);
         }
 
         return $this;
@@ -329,24 +410,51 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeExperience(Experience $experience): self
     {
-        $this->experiences->removeElement($experience);
+        if ($this->experiences->removeElement($experience)) {
+            // set the owning side to null (unless already changed)
+            if ($experience->getUser() === $this) {
+                $experience->setUser(null);
+            }
+        }
 
         return $this;
     }
 
-    public function getCollab(): ?bool
-    {
-        return $this->Collab;
-    }
+//    public function getUpdatedAt(): ?\DateTimeInterface
+//    {
+//        return $this->updatedAt;
+//    }
+//
+//    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+//    {
+//        $this->updatedAt = $updatedAt;
+//
+//        return $this;
+//    }
 
-    public function setCollab(?bool $Collab): self
-    {
-        $this->Collab = $Collab;
+//    public function getFile(): ?File
+//    {
+//        return $this->file;
+//    }
+//
+//    public function setFile(?File $file): self
+//    {
+//        // unset the owning side of the relation if necessary
+//        if ($file === null && $this->file !== null) {
+//            $this->file->setUser(null);
+//        }
+//
+//        // set the owning side of the relation if necessary
+//        if ($file !== null && $file->getUser() !== $this) {
+//            $file->setUser($this);
+//        }
+//
+//        $this->file = $file;
+//
+//        return $this;
+//    }
 
-        return $this;
-    }
-    public function __toString()
-    {
-        return $this->firstname;
-    }
+
+
+
 }

@@ -2,8 +2,7 @@ security:
     password_hashers:
         App\Entity\User:
             algorithm: auto
-        App\Entity\Candidate:
-            algorithm: auto
+
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
@@ -44,13 +43,18 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+        - { path: ^/admin, roles: ROLE_COLLABORATOR }
         - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/profile, roles: ROLE_USER }
-        - { path: ^/collaborator, roles: ROLE_COLLABORATOR }
-#
+        - { path: ^/profil, roles: ROLE_USER }
+        - { path: ^/commercial, roles: ROLE_COMMERCIAL }
+
+    #
 #
     role_hierarchy:
-        ROLER_USER: ROLE_USER
         ROLE_ADMIN: ROLE_ADMIN
-        ROLE_COLLABORATOR: ROLER_COLLABORATOR
+        ROLE_COLLABORATOR: ROLE_COLLABORATOR
+        ROLE_COMMERCIAL: ROLE_COMMERCIAL
+        ROLER_USER: ROLE_USER
+
+
 #        ROLE_SUPER_ADMIN: [ ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH ]
