@@ -64,6 +64,7 @@ class UserCrudController extends AbstractCrudController
             TextField::new('city'),
 
             BooleanField::new('collab')->setPermission('ROLE_ADMIN'),
+            BooleanField::new('available')->setPermission('ROLE_COMMERCIAL'),
 
             TextField::new('password'),
 

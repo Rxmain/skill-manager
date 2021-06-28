@@ -6,6 +6,7 @@ use App\Entity\Competences;
 use App\Entity\User;
 use App\Form\CompetencesType;
 use App\Repository\CompetencesRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -34,6 +35,35 @@ class CompetencesController extends AbstractController
             'controller_name' => 'CompetencesController',
             'competences' => $competences
 
+        ]);
+    }
+
+    /**
+     * @Route("/competences/new/{id}", name="new-competence")
+     */
+
+    public function new(Request $request, UserRepository $userRepository): Response
+    {
+        $id = $request->get('id');
+        $user = $userRepository->find($id);
+
+        $competences = new Competences();
+        $form = $this->createForm(CompetencesType::class, $competences);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $competences = $form->getData();
+
+            $this->entityManager->persist($competences->setUser($user));
+            $this->entityManager->flush();
+
+            return $this->redirectToRoute('admin');
+
+        }
+
+        return $this->render('competences/new.html.twig', [
+            'form_competences'=> $form->createView()
         ]);
     }
 
@@ -67,7 +97,7 @@ class CompetencesController extends AbstractController
             return $this->redirectToRoute('admin');
         }
         return $this->render('profil/new.html.twig', [
-            'articleForm' => $form->createView()
+            'competences_form' => $form->createView()
         ]);
     }
 

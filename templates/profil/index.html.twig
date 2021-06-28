@@ -43,10 +43,12 @@
                     <p class="single-competence">{{ competence.name }}</p>
                 {% endfor %}
             </div>
+            <a class="edit-competence" href="{{ path('edit-user', { 'id': app.user.id})}}">Editer mon profil</a>
         </div>
         <div class="competences-part">
             <div class="form-skills">
                 <h2>Mes Compétences</h2>
+                <a href="{{ path('new-competence', { 'id': app.user.id})}}">Ajouter une compétence</a>
             </div>
             <div class="competences-all">
                 {% for competence in app.user.competences %}
@@ -71,6 +73,7 @@
         <div class="experience-part">
             <div class="form-experience">
                 <h2>Mes Expériences</h2>
+                <a href="{{ path('new_experience', { 'id': app.user.id})}}">Ajouter une expérience</a>
             </div>
             <div class="competences-all">
                 {% for experience in app.user.experiences %}

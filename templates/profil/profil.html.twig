@@ -12,6 +12,12 @@
             {% if user.collab == null %}
                 <p>Candidat</p>
             {% endif %}
+            {% if user.available == 1 %}
+                <p>Disponible</p>
+            {% endif %}
+            {% if user.available == 0  %}
+                <p>Pas disponible</p>
+            {% endif %}
             {% for competence in user.competences %}
 
             {% endfor %}

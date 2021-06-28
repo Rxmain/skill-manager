@@ -7,6 +7,7 @@ use App\Entity\Experience;
 use App\Entity\User;
 use App\Form\CompetencesType;
 use App\Form\ExperienceType;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,11 +37,14 @@ class ExperienceController extends AbstractController
     }
 
     /**
-     * @Route("/experience/new", name="new_experience")
+     * @Route("/experience/new/{id}", name="new_experience")
      */
 
-    public function new(Request $request): Response
+    public function new(Request $request,  UserRepository $userRepository): Response
     {
+        $id = $request->get('id');
+        $user = $userRepository->find($id);
+
         $experience = new Experience();
         $form = $this->createForm(ExperienceType::class, $experience);
 
@@ -49,11 +53,14 @@ class ExperienceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $experience = $form->getData();
 
-            $this->entityManager->persist($experience);
+            $this->entityManager->persist($experience->setUser($user));
             $this->entityManager->flush();
+
+            return $this->redirectToRoute('admin');
+
         }
 
-        return $this->render('profil/index.html.twig', [
+        return $this->render('experience/new.html.twig', [
             'form_experience'=> $form->createView()
         ]);
     }

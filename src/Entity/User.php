@@ -91,22 +91,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\OneToMany(targetEntity=Experience::class, mappedBy="user")
      */
     private $experiences;
-//
-//    /**
-//     * @ORM\Column (type="string", length=100, nullable=true)
-//     */
-//    private $thumbnail;
-//
-//    /**
-//     * @Vich\UploadableField(mapping="thumbnails", fileNameProperty="thumbnail")
-//     *
-//     */
-//    private $thumbnailFile;
-
-//    /**
-//     * @ORM\Column (type="datetime", nullable=true)
-//     */
-//    private $updatedAt;
 
     /**
      * @ORM\OneToMany(targetEntity=Competences::class, mappedBy="user")
@@ -114,39 +98,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $competences;
 
     /**
-//     * @return mixed
+     * @ORM\Column(type="boolean", nullable=true)
      */
-//    public function getThumbnailFile(): ?array
-//    {
-//        return $this->thumbnailFile;
-//    }
-//
-//    /**
-//     * @param mixed $thumbnailFile
-//     */
-//    public function setThumbnailFile($thumbnailFile = null)
-//    {
-//        $this->thumbnailFile = $thumbnailFile;
-//        if( null !== $thumbnailFile) {
-//            $this->updatedAt = new \DateTime();
-//        }
-//    }
+    private $available;
 
-//    /**
-//     * @return mixed
-//     */
-//    public function getThumbnail()
-//    {
-//        return $this->thumbnail;
-//    }
-//
-//    /**
-//     * @param mixed $thumbnail
-//     */
-//    public function setThumbnail($thumbnail): void
-//    {
-//        $this->thumbnail = $thumbnail;
-//    }
 
     public function __construct()
     {
@@ -453,6 +408,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 //
 //        return $this;
 //    }
+
+public function getAvailable(): ?bool
+{
+    return $this->available;
+}
+
+public function setAvailable(?bool $available): self
+{
+    $this->available = $available;
+
+    return $this;
+}
 
 
 
