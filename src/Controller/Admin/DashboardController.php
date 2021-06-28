@@ -56,17 +56,17 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::section('Administration');
-        if ($this->isGranted('ROLE_COMMERCIAL') || 'ROLE_ADMIN') {
+        if ($this->isGranted('ROLE_COMMERCIAL') && 'ROLE_ADMIN') {
             yield MenuItem::linktoDashboard('Accueil', 'fa fa-home');
         }
         yield MenuItem::linkToRoute('Mon profil', 'fa fa-user', 'admin-profil');
 
-        if ($this->isGranted('ROLE_COMMERCIAL') || 'ROLE_ADMIN') {
+        if ($this->isGranted('ROLE_COMMERCIAL') && 'ROLE_ADMIN') {
             yield MenuItem::section('Gestion des collaborateur / Candidats');
             yield MenuItem::linkToCrud('Édition de profil', 'fas fa-users', User::class);
         }
 
-        if ($this->isGranted('ROLE_COMMERCIAL') || 'ROLE_ADMIN') {
+        if ($this->isGranted('ROLE_ADMIN') && 'ROLE_COMMERCIAL') {
             yield MenuItem::section('Expériences, compétences,...');
             yield MenuItem::linkToCrud('Entreprises', 'fas fa-archive', Entreprise::class);
             yield MenuItem::linkToCrud('Competences', 'fas fa-star', Competences::class);
